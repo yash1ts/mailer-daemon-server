@@ -9,6 +9,7 @@
     "build": "babel src -d dist",
     "start": "babel-node && npm run build && node dist",
     "restart": "rimraf dist && npm run start",
+    "debug": "npm run build && node dist",
     "dev": "nodemon --exec npm run restart"
   },
   "keywords": [],

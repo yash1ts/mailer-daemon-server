@@ -2,13 +2,10 @@
 
 import express from 'express';
 import fetch from 'node-fetch';
-import 'core-js/stable.js';
-import 'regenerator-runtime/runtime.js';
+import DataStore from 'nedb';
 
 const app = express();
 const PORT = 3000;
-
-const DataStore = require('nedb');
 
 const PlacementStore = new DataStore({ filename: './place.json', autoload: true }),
   CampusStore = new DataStore({ filename: './campus.json', autoload: true }),
