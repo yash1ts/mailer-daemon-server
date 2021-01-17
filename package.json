@@ -1,15 +1,35 @@
 {
-  "name": "server",
+  "name": "nodeapp",
   "version": "1.0.0",
-  "description": "backend",
+  "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "test",
-    "start":"node index.js"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "babel src -d dist",
+    "start": "npm run build && node dist",
+    "restart": "rimraf dist && npm run start",
+    "dev": "nodemon --exec npm run restart"
   },
+  "keywords": [],
   "author": "",
   "license": "ISC",
+  "devDependencies": {
+    "@babel/cli": "^7.12.10",
+    "@babel/core": "^7.12.10",
+    "@babel/plugin-transform-async-to-generator": "^7.12.1",
+    "@babel/plugin-transform-runtime": "^7.12.10",
+    "@babel/polyfill": "^7.12.1",
+    "@babel/preset-env": "^7.12.11",
+    "@babel/register": "^7.12.10",
+    "webpack": "^5.11.1",
+    "webpack-cli": "^4.3.1"
+  },
   "dependencies": {
-    "express": "^4.17.1"
+    "@babel/polyfill": "^7.12.1",
+    "@babel/runtime": "^7.12.5",
+    "babel-loader": "^8.2.2",
+    "express": "^4.17.1",
+    "nedb": "^1.8.0",
+    "node-fetch": "^2.6.1"
   }
 }
