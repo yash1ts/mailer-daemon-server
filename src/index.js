@@ -5,7 +5,7 @@ import fetch from 'node-fetch';
 import DataStore from 'nedb';
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 80;
 
 const PlacementStore = new DataStore({ filename: './place.json', autoload: true }),
   CampusStore = new DataStore({ filename: './campus.json', autoload: true }),
