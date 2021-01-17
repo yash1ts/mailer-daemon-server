@@ -46,7 +46,7 @@ app.get('/updateToken', async (req,res)=>{
 })
 
 app.get('/place',(req,res)=>{
-  res.send(PlaceStore.getAllData());
+  res.send(PlacementStore.getAllData());
 })
 
 app.listen(PORT, () => {
