@@ -2,10 +2,11 @@
 
 import express from 'express';
 import fetch from 'node-fetch';
-import "regenerator-runtime/runtime";
+import 'core-js/stable';
+import 'regenerator-runtime/runtime';
 
 const app = express();
-const PORT = port = process.env.PORT || 80;
+const PORT = 3000;
 
 const DataStore = require('nedb');
 
