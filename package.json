@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "babel src -d dist",
-    "start": "npm run build && node dist",
+    "start": "babel-node && pm run build && node dist",
     "restart": "rimraf dist && npm run start",
     "dev": "nodemon --exec npm run restart"
   },
@@ -27,6 +27,7 @@
   "dependencies": {
     "@babel/polyfill": "^7.12.1",
     "@babel/runtime": "^7.12.5",
+    "babel-cli": "^6.26.0",
     "babel-loader": "^8.2.2",
     "express": "^4.17.1",
     "nedb": "^1.8.0",
