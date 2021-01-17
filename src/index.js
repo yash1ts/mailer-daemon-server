@@ -2,8 +2,8 @@
 
 import express from 'express';
 import fetch from 'node-fetch';
-require('./core-js/stable');
-require('./regenerator-runtime/runtime');
+import 'core-js/stable.js';
+import 'regenerator-runtime/runtime.js';
 
 const app = express();
 const PORT = 3000;
