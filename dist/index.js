@@ -5,7 +5,7 @@ import fetch from 'node-fetch';
 import DataStore from 'nedb';
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 80;
 
 const PlacementStore = new DataStore({ filename: './place.json', autoload: true }),
       CampusStore = new DataStore({ filename: './campus.json', autoload: true }),
@@ -18,7 +18,7 @@ const TAGS = {
 };
 
 var token = "EAAFy6i3ZALOYBAIoQ7ZCZCF4NTUwdkfMphQQTQU11WfG3teSLYNaDYlnHEmOdutRoyZCTKVTgp6qZBdQHmIDwIr5NKXBJnjZBdELbzHkcbTlXVGZCbcAcgj0ZBMdJmaCFfZAZAeJIHTuBzoO6FvbAb1P7lGPCeIVXsHygb04HRZAWkTi3lZALD70wLey";
-const url = "https://graph.facebook.com/525664164162839?fields=posts.limit(4){full_picture,story_tags,message,created_time,message_tags,permalink_url,attachments{subattachments}}&access_token=";
+const url = "https://graph.facebook.com/525664164162839?fields=posts.limit(20){full_picture,story_tags,message,created_time,message_tags,permalink_url,attachments{subattachments}}&access_token=";
 app.get('/update', async (req, res) => {
   // token=TokenStore.getCandidates();
   const response = await fetch(url + token).then(response => response.json()).then(data => {
@@ -27,7 +27,7 @@ app.get('/update', async (req, res) => {
     res.send(error.message);
   });
   response.forEach(it => {
-    if (it.message_tags[0].name === TAGS.PLACEMENT || it.message_tags[0].name === TAGS.PLACEMENT2) {
+    if (it.message_tags && (it.message_tags[0].name === TAGS.PLACEMENT || it.message_tags[0].name === TAGS.PLACEMENT2)) {
       PlacementStore.insert(it);
     } else {
       CampusStore.insert(it);
@@ -46,7 +46,7 @@ app.get('/updateToken', async (req, res) => {
 });
 
 app.get('/place', (req, res) => {
-  res.send(PlaceStore.getAllData());
+  res.send(PlacementStore.getAllData());
 });
 
 app.listen(PORT, () => {
