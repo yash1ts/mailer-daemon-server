@@ -3,9 +3,11 @@
 import express from 'express';
 import fetch from 'node-fetch';
 import DataStore from 'nedb';
+import { insertPosts, insertPlaces, readAllPosts } from './database.js';
 
 const app = express();
-const PORT = process.env.PORT || 80;
+// const PORT = process.env.PORT || 80;
+const PORT = 3000;
 
 const PlacementStore = new DataStore({ filename: './place.json', autoload: true }),
       CampusStore = new DataStore({ filename: './campus.json', autoload: true }),
@@ -26,18 +28,26 @@ app.get('/update', async (req, res) => {
   }).catch(error => {
     res.send(error.message);
   });
+  const placeData = [],
+        postData = [];
   response.forEach(it => {
     if (it.message_tags && (it.message_tags[0].name === TAGS.PLACEMENT || it.message_tags[0].name === TAGS.PLACEMENT2)) {
-      PlacementStore.insert(it);
+      placeData.push(it);
     } else {
-      CampusStore.insert(it);
+      postData.push(it);
     }
   });
+  insertPosts(postData);
+  insertPlaces(placeData);
   res.send(response);
 });
 
 app.get('/posts', (req, res) => {
-  res.send(CampusStore.getAllData());
+  readAllPosts().then(data => {
+    res.send({ data });
+  }).catch(error => {
+    console.log(error);
+  });
 });
 
 app.get('/updateToken', async (req, res) => {
