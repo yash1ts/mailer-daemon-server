@@ -2,7 +2,7 @@
 
 import express from 'express';
 import fetch from 'node-fetch';
-import './database.js';
+import * as Database from './database.js';
 
 const app = express();
 const PORT = process.env.PORT || 80;
@@ -30,13 +30,13 @@ app.get('/update', async (req, res) => {
         postData.push(it);
       }
     });
-    insertPosts(postData);
-    insertPlaces(placeData);
+    Database.insertPosts(postData);
+    Database.insertPlaces(placeData);
     res.send(response);
 });
 
 app.get('/posts',(req,res)=>{
-  readAllPosts().then(
+  Database.readAllPosts().then(
     data=>{
       res.send({data});
     }
@@ -44,7 +44,7 @@ app.get('/posts',(req,res)=>{
 })
 
 app.get('/place',(req,res)=>{
-  readAllPlaces().then(
+  Database.readAllPlaces().then(
     data=>{
       res.send({data});
     }
