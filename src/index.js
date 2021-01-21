@@ -2,7 +2,7 @@
 
 import express from 'express';
 import fetch from 'node-fetch';
-import {insertPosts, insertPlaces, readAllPosts} from './database.js';
+import './database.js';
 
 const app = express();
 const PORT = process.env.PORT || 80;
