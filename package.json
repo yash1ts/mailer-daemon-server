@@ -7,9 +7,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "babel src -d dist",
-    "start": "babel-node && npm run build && node dist",
+    "start": "babel-node && npm run build && node --experimental-json-modules dist",
     "restart": "rimraf dist && npm run start",
-    "debug": "npm run build && node dist",
+    "debug": "npm run build && node --experimental-json-modules dist",
     "dev": "nodemon --exec npm run restart"
   },
   "keywords": [],
@@ -32,6 +32,7 @@
     "babel-cli": "^6.26.0",
     "babel-loader": "^8.2.2",
     "express": "^4.17.1",
+    "firebase-admin": "^9.4.2",
     "mongodb": "^3.6.3",
     "node-fetch": "^2.6.1"
   }

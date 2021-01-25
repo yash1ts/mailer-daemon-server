@@ -10,6 +10,7 @@ export function insertPosts(posts) {
         const db = client.db("app");
         var collection = db.collection('posts');
         collection.insertMany(posts);
+        client.close();
     });
 }
 
@@ -21,10 +22,23 @@ export function insertPlaces(places) {
         const db = client.db("app");
         var collection = db.collection('places');
         collection.insertMany(places);
+        client.close();
     });
 }
 
 export async function readAllPosts() {
+    const client = await MongoClient.connect(uri);
+    const db = client.db("app");
+    var collection = db.collection('posts');
+    var cursor = collection.find({});
+    var result = await cursor.toArray().then(data => {
+        return data;
+    });
+    client.close();
+    return result;
+}
+
+export async function readAllPlaces() {
     const client = await MongoClient.connect(uri);
     const db = client.db("app");
     var collection = db.collection('places');
@@ -32,5 +46,6 @@ export async function readAllPosts() {
     var result = await cursor.toArray().then(data => {
         return data;
     });
+    client.close();
     return result;
 }
