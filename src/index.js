@@ -47,7 +47,7 @@ app.get('/update/limit/:limit', async (req, res) => {
 app.get('/posts',(req,res)=>{
   Database.readAllPosts().then(
     data=>{
-      res.send({data});
+      res.send(data);
     }
   ).catch(error=>{console.log(error)});
 })
@@ -55,7 +55,7 @@ app.get('/posts',(req,res)=>{
 app.get('/place',(req,res)=>{
   Database.readAllPlaces().then(
     data=>{
-      res.send({data});
+      res.send(data);
     }
   ).catch(error=>{console.log(error)});
 })
