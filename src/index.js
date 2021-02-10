@@ -63,14 +63,14 @@ app.get('/place',(req,res)=>{
 app.post('/push',async (req,res)=>{
   const message = req.body;
   if(!Object.values(Fcm.Topics).includes(message.topic)){
-    res.send(400);
+    res.status(400).json({message:"Bad Request"});
     return;
   }
   const success = await Fcm.sendMessageToTopic(message);
   if(success){
-    res.sendStatus(200);
+    res.status(200).json({message:"Sent Successfully"});
   }else{
-    res.sendStatus(500);
+    res.status(500).json({message:"Internal Server Error"});
   }
 })
 
