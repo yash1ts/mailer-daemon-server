@@ -23,6 +23,12 @@
     "@babel/polyfill": "^7.12.1",
     "@babel/preset-env": "^7.12.11",
     "@babel/register": "^7.12.10",
+    "eslint": "^7.25.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-prettier": "^3.4.0",
+    "prettier": "^2.2.1",
     "webpack": "^5.11.1",
     "webpack-cli": "^4.3.1"
   },
