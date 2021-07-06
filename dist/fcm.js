@@ -1,5 +1,6 @@
 import admin from 'firebase-admin';
 import serviceAccount from '../admin-key.json';
+import { isLNFTag, isPlacementTag } from './utils';
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
@@ -18,9 +19,33 @@ export function formNotification(topic, title, body, image, action) {
   };
 }
 
+export async function sendNotification(post, tag) {
+  let clickAction = 'NoticesActivity';
+  let topic = 'campus';
+  if (isPlacementTag(tag)) {
+    clickAction = 'PlacementActivity';
+    topic = 'placement';
+  }
+  if (isLNFTag(tag)) {
+    clickAction = 'LostAndFoundActivity';
+    topic = 'lnf';
+  }
+  const message = {
+    android: {
+      notification: {
+        title: tag,
+        body: post,
+        click_action: clickAction
+      }
+    },
+    topic
+  };
+  sendNotification(message);
+}
+
 export async function sendMessageToTopic(message) {
   // Send a message to devices subscribed to the provided topic.
-  return await admin.messaging().send(message).then(response => {
+  return admin.messaging().send(message).then(response => {
     // Response is a message ID string.
     console.log(response);
     return true;

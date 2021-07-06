@@ -75,14 +75,12 @@ app.get('/update/limit/:limit', async (req, res) => {
       break;
     }
     postsData.push(it);
-    if (it.message_tags && it.message_tags.length !== 0) {
-      if (isPlacementTag(it.message_tags[0])) {
-        placeData.push(it);
-      } else if (isLNFTag(it.message_tags[0])) {
-        LNFData.push(it);
-      } else {
-        noticeData.push(formatNotices(it));
-      }
+    const category = (it.message_tags && it.message_tags[0]) ? it.message_tags[0] : '#PlacementDaemon';
+    // Fcm.sendNotification(it.message, category);
+    if (isPlacementTag(category)) {
+      placeData.push(it);
+    } else if (isLNFTag(category)) {
+      LNFData.push(it);
     } else {
       noticeData.push(formatNotices(it));
     }
@@ -94,7 +92,7 @@ app.get('/update/limit/:limit', async (req, res) => {
 });
 
 app.get('/posts', (req, res) => {
-  Database.readAllNotices().then(
+  Database.readNotices(50).then(
     (data) => {
       res.send(data);
     },

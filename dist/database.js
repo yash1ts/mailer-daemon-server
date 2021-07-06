@@ -36,20 +36,20 @@ export function insertPlaces(places) {
   collection.insertMany(places);
 }
 
-export async function readAllNotices() {
+export async function readNotices(limit = 0) {
   const db = Client.db('app');
   const collection = db.collection('notices');
-  const cursor = collection.find({}).sort({ created_time: -1 });
+  const cursor = collection.find({}).sort({ created_time: -1 }).limit(limit);
   const result = await cursor.toArray().then(data => data);
   return result;
 }
 
 export async function getLatest() {
   const db = Client.db('app');
-  let collection = db.collection('posts');
-  const cursor1 = collection.find({});
+  let collection = db.collection('notices');
+  const cursor1 = collection.find({}).sort({ created_time: -1 });
   collection = db.collection('places');
-  const cursor2 = collection.find({});
+  const cursor2 = collection.find({}).sort({ created_time: -1 });
   const result1 = await cursor1.next();
   const result2 = await cursor2.next();
   if (result1 && result2 && result1.created_time > result2.created_time) {
@@ -61,7 +61,7 @@ export async function getLatest() {
 export async function readAllPlaces() {
   const db = Client.db('app');
   const collection = db.collection('places');
-  const cursor = collection.find({});
+  const cursor = collection.find({}).sort({ created_time: -1 });
   const result = await cursor.toArray().then(data => data);
   return result;
 }
