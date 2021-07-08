@@ -1,9 +1,8 @@
 import admin from 'firebase-admin';
-import serviceAccount from '../admin-key.json';
 import { isLNFTag, isPlacementTag } from './utils';
 
 admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
+  credential: admin.credential.cert(JSON.parse(process.env.FIREBASE_KEY)),
   databaseURL: 'https://mailer-daemon-a2608.firebaseio.com',
 });
 
@@ -41,6 +40,12 @@ export async function sendNotification(post, tag) {
     topic,
   };
   sendNotification(message);
+}
+
+export async function verfyToken(idToken) {
+  const decodedToken = await admin.auth().verifyIdToken(idToken)
+  const user = await admin.auth().getUser(decodedToken.uid)
+  return true;
 }
 
 export async function sendMessageToTopic(message) {

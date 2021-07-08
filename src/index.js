@@ -17,7 +17,7 @@ app.use(async (req, res, next) => {
   next();
 });
 
-function formatNotices(data) {
+function formatPosts(data) {
   const result = {};
   result.id = data.id;
   result.message = data.message;
@@ -51,8 +51,8 @@ function formatNotices(data) {
 
 const token = 'EAAFy6i3ZALOYBAIoQ7ZCZCF4NTUwdkfMphQQTQU11WfG3teSLYNaDYlnHEmOdutRoyZCTKVTgp6qZBdQHmIDwIr5NKXBJnjZBdELbzHkcbTlXVGZCbcAcgj0ZBMdJmaCFfZAZAeJIHTuBzoO6FvbAb1P7lGPCeIVXsHygb04HRZAWkTi3lZALD70wLey';
 
-app.get('/update/limit/:limit', async (req, res) => {
-  const { limit } = req.params;
+app.get('/update', async (req, res) => {
+  const { limit, notify } = req.query;
   if (!limit) {
     res.sendStatus(400);
     return;
@@ -76,13 +76,15 @@ app.get('/update/limit/:limit', async (req, res) => {
     }
     postsData.push(it);
     const category = (it.message_tags && it.message_tags[0]) ? it.message_tags[0] : '#PlacementDaemon';
-    // Fcm.sendNotification(it.message, category);
+    if(notify) {
+      Fcm.sendNotification(it.message, category);
+    }
     if (isPlacementTag(category)) {
-      placeData.push(it);
+      placeData.push(formatPosts(it));
     } else if (isLNFTag(category)) {
-      LNFData.push(it);
+      LNFData.push(formatPosts(it));
     } else {
-      noticeData.push(formatNotices(it));
+      noticeData.push(formatPosts(it));
     }
   }
   Database.insertPosts(postsData);
@@ -109,16 +111,20 @@ app.get('/place', (req, res) => {
 
 app.post('/push', async (req, res) => {
   const message = req.body;
-  if (!Object.values(Fcm.Topics).includes(message.topic)) {
-    res.status(400).json({ message: 'Bad Request' });
-    return;
-  }
-  const success = await Fcm.sendMessageToTopic(message);
-  if (success) {
-    res.status(200).json({ message: 'Sent Successfully' });
-  } else {
-    res.status(500).json({ message: 'Internal Server Error' });
-  }
+  Fcm.verfyToken(message.data?.token).then(()=>{
+    if (!Object.values(Fcm.Topics).includes(message.topic)) {
+      res.status(400).json({ message: 'Bad Request' });
+      return;
+    }
+    const success = await Fcm.sendMessageToTopic(message);
+    if (success) {
+      res.status(200).json({ message: 'Sent Successfully' });
+    } else {
+      res.status(500).json({ message: 'Internal Server Error' });
+    }
+  }).catch(()=>{
+    res.status(401).json({ message: 'Authentication Failed' });
+  })
 });
 
 app.listen(PORT, async () => {

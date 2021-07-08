@@ -1,45 +1,34 @@
 {
-  "type": "module",
   "name": "nodeapp",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "private": "true",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "babel src -d dist",
-    "start": "babel-node && npm run build && node --experimental-json-modules dist",
+    "start": "npm run build && node dist/main.js",
     "restart": "rimraf dist && npm run start",
-    "debug": "npm run build && node --experimental-json-modules dist",
-    "dev": "nodemon --exec npm run restart"
+    "debug": "npm run dev && node dist/main.js",
+    "dev": "webpack --config dev.config.js",
+    "build": "webpack --config prod.config.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@babel/cli": "^7.12.10",
-    "@babel/core": "^7.12.10",
-    "@babel/plugin-transform-async-to-generator": "^7.12.1",
-    "@babel/plugin-transform-runtime": "^7.12.10",
-    "@babel/polyfill": "^7.12.1",
-    "@babel/preset-env": "^7.12.11",
-    "@babel/register": "^7.12.10",
+    "@babel/core": "^7.14.6",
+    "@babel/preset-env": "^7.14.7",
+    "babel-loader": "^8.2.2",
     "eslint": "^7.25.0",
-    "eslint-config-airbnb-base": "^14.2.1",
-    "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-import": "^2.22.1",
-    "eslint-plugin-prettier": "^3.4.0",
-    "prettier": "^2.2.1",
-    "webpack": "^5.11.1",
-    "webpack-cli": "^4.3.1"
+    "webpack": "^5.42.1",
+    "webpack-cli": "^4.7.2"
   },
   "dependencies": {
     "@babel/polyfill": "^7.12.1",
-    "@babel/runtime": "^7.12.5",
-    "babel-cli": "^6.26.0",
-    "babel-loader": "^8.2.2",
+    "@firebase/app": "^0.6.28",
     "express": "^4.17.1",
-    "firebase-admin": "^9.4.2",
+    "firebase-admin": "^9.10.0",
     "mongodb": "^3.6.3",
+    "mongodb-client-encryption": "^1.2.6",
     "node-fetch": "^2.6.1"
   }
 }

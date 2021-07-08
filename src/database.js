@@ -1,6 +1,6 @@
 import MongoClient from 'mongodb';
 
-const uri = 'mongodb+srv://yash1ts:y12345678@cluster0.0nqvm.mongodb.net/app?retryWrites=true&w=majority';
+const uri = process.env.DATABASE;
 let Client;
 
 export async function initialise() {
